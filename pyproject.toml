@@ -1,6 +1,6 @@
 [project]
 name = "pyFBDS"
-version = "0.1.4"
+version = "0.1.5"
 description = "Pacote e scripts para obter dados espaciais da Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)"
 readme = "README.md"
 requires-python = ">=3.12"
