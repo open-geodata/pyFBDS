@@ -1,7 +1,7 @@
 # pyFBDS
 
 [![Repo](https://img.shields.io/badge/GitHub-repo-blue?logo=github&logoColor=f5f5f5)](https://github.com/open-geodata/pyFBDS)
-[![PyPI - Version](https://img.shields.io/pypi/v/pyfbds?logo=pypi&label=PyPI&color=blue)](https://pypi.org/project/pyfbds/)<br>
+[![PyPI - Version](https://img.shields.io/pypi/v/pyFBDS?logo=pypi&label=PyPI&color=blue)](https://pypi.org/project/pyfbds/)<br>
 [![Read the Docs](https://img.shields.io/readthedocs/pyFBDS?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyFBDS.readthedocs.io/)
 [![Publish Python to PyPI](https://github.com/michelmetran/pyFBDS/actions/workflows/publish-to-pypipoetry.yml/badge.svg)](https://github.com/michelmetran/pyFBDS/actions/workflows/publish-to-pypipoetry.yml)
 
