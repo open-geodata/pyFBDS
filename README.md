@@ -11,6 +11,10 @@ Pacote e _scripts_ para obter dados espaciais do [**repositório público de map
 
 <br>
 
+![qgis](docs/assets/imgs/qgis.png)
+
+<br>
+
 ---
 
 ## Como Instalar?
@@ -25,13 +29,36 @@ pip3 install pyFBDS
 
 ## Como Usar?
 
+Abaixo alguns usos simples do pacote.
+
 ```shell
 # Importa pacote
 import pyFBDS
 
 # Instancia Objeto
-fbds = pyFBDS.Repo(output_path='.')
+fbds = pyFBDS.Repo(
+    output_path='.',
+    temp_path='.',
+    log_path='.',
+)
 
-# Chama o método
-fbds.get_municipio(id_ibge=353243)
+# Faz Download dos Dados para output_path
+fbds.download_data(municipio='SANTOS', estado='SP')
+
+# Lê dados espaciais em formato geodataframe
+fbds.read_data(municipio='SANTOS', estado='SP')
 ```
+
+<br>
+
+---
+
+## _TODO_
+
+1. ~~Definir funções de fazer o _download_ dos arquivos, a partir da lista.~~
+2. ~~Realizar o agendamento para obter a lista.~~
+3. ~~Ajustar a pasta de _download_. Atualmente vai para a pasta padrão. Movi manualmente!~~
+4. Ajustar os tipos de arquivos (Pontos, Polylines, Polygons), visto que na lista de arquivos surgiu uma feição curiosa:
+   1. _RIOS_DUPLOS.shp_
+   2. _RIOS*DUPLOS*.shp_
+   3. _RIOS_DUPLOS_POL.shp_

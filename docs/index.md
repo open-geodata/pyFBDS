@@ -29,17 +29,3 @@ Abaixo segue informações obtidas no _site_ da Fundação:
 <br>
 
 ![qgis](./assets/imgs/qgis.png)
-
-<br>
-
----
-
-## _TODO_
-
-1. ~~Definir funções de fazer o _download_ dos arquivos, a partir da lista.~~
-2. ~~Realizar o agendamento para obter a lista.~~
-3. ~~Ajustar a pasta de _download_. Atualmente vai para a pasta padrão. Movi manualmente!~~
-4. Ajustar os tipos de arquivos (Pontos, Polylines, Polygons), visto que na lista de arquivos surgiu uma feição curiosa:
-   1. _RIOS_DUPLOS.shp_
-   2. _RIOS*DUPLOS*.shp_
-   3. _RIOS_DUPLOS_POL.shp_
