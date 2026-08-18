@@ -1,4 +1,4 @@
-[![Repo](https://img.shields.io/badge/GitHub-repo-blue?logo=github&logoColor=f5f5f5)](https://github.com/open-geodata/br_fbds)
+[![Repo](https://img.shields.io/badge/GitHub-repo-blue?logo=github&logoColor=f5f5f5)](https://github.com/open-geodata/pyFBDS)
 [![PyPI - Version](https://img.shields.io/pypi/v/pyesaj?logo=pypi&label=PyPI&color=blue)](https://pypi.org/project/pyesaj/)<br>
 [![Read the Docs](https://img.shields.io/readthedocs/pyFBDS?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyFBDS.readthedocs.io/)
 [![Publish Python to PyPI](https://github.com/michelmetran/pyFBDS/actions/workflows/publish-to-pypipoetry.yml/badge.svg)](https://github.com/michelmetran/pyFBDS/actions/workflows/publish-to-pypipoetry.yml)
@@ -29,70 +29,6 @@ Abaixo segue informações obtidas no _site_ da Fundação:
 <br>
 
 ![qgis](./assets/imgs/qgis.png)
-
-<br>
-
----
-
-## _Framework_ h5ai
-
-A interface do repositório foi construída em com o _framework_ [**_h5ai_**](https://larsjung.de/h5ai) que se assemelha a estrutura de um servidor FTP. Foi importante estudar o funcionamento do _framework_, do lado do cliente, para descobrir as melhores maneiras de "raspar" os dados.
-
-Pesquisei a possibilidade de existirem APIs em python para "raspar", de modo facilitado. Na ausência de APIs públicas, foi necessário pensar em técnicas de _webscrapping_.
-
-Pesquisando sobre APIs para utilizar com o _framework_ [**_h5ai_**](https://larsjung.de/h5ai), encontrei informação sobre um _bug_, no [Exploit-DB.com](https://www.exploit-db.com/exploits/38256). (a ser pequisado...)
-
-<br>
-
----
-
-## Abordagens
-
-### Primeira Abordagem (_ruim e, portanto, descontinuada_)
-
-A concepção empregada foi obter a lista dos arquivos em formato tabular (_.csv_) para, posteriormente, fazer o _download_.
-
-Usando o [_./scripts_/**01_get_data.ipynb**](scripts/01_get_data.ipynb), foi utilizada a seguinte concepção: Para criar a lista de arquivos, fiz com auxílio do _selenium_. Com o _driver_ eram realizados os seguintes procedimentos:
-
-1. Listar todos as **Subpastas** e **Arquivos** de um diretório raiz;
-2. Para cada **Subpasta** encontrada, entra-se nela, e repetir o procedimento de listar **Arquivos**, retornando para a pasta anterior ao final
-3. Fazia isso de modo em _loop_, utilizando uma função recursiva.
-4. A cada iteração, todas as URLs apresentadas eram colecionadas em um tabela _.csv_.
-
-<br>
-
-![Abordagem_1](./assets/imgs/abordagem_1.gif)
-
-<br>
-
-Uma vez com todos os links, foi realizado o download usando o JDownloder, com arquivo [_scripts_/**03_download_list_files.ipynb**](scripts/03_download_list_files.ipynb)
-
-<br>
-
----
-
-### Segunda Abordagem (_melhor!!_)
-
-A partir do [diretório do Estado de São Paulo](https://geo.fbds.org.br/SP/), com 645 pastas (uma para cada município), foi realizado o _download_ da pasta, resultando em 645 arquivos _.tar_. Isso foi feito com o arquivo [_./scripts_/**01_get_data.ipynb**](scripts/01_get_data.ipynb). A ideia era:
-
-1. Listar todos as **Subpastas** (que represetam os municípios) de um diretório raiz;
-2. Usando os conceitos de [_ActionChains_](https://www.selenium.dev/selenium/docs/api/py/webdriver/selenium.webdriver.common.action_chains.html), passar o mouse sobre a pasta e clicar nela.
-3. Clicar no botão "Fazer Download".
-
-<br>
-
-![Abordagem_2](./assets/imgs/abordagem_2.gif)
-
-<br>
-
-Após isso, com uso do [_scripts_/**02_adjust_data.ipynb**](scripts/02_adjust_data.ipynb), foram feitos os seguintes procedimentos:
-
-1. Listar todos os arquivos _shapefile (.shp)_ que estão dentro dos arquivos _.tar_, sem descompactar!
-2. Criar uma tabela com essa lista de arquivos.
-3. Ajustar essa tabela, agregando diversas informações para re-criar os caminhos para o arquivo.
-4. Criar cententas de arquivos temporários (com auxílio da bibliotenca [_tempfile_](https://docs.python.org/3/library/tempfile.html)), com o mesmo padrão de nome, evitando a necessidade de descompactar os arquivos _.tar_
-5. Listar os arquivos _fake shapefile_ e ajusta-los, para que direcionem ao arquivo dentro do _.tar_
-6. Testar e leitura dos arquivos pelo geopandas, conectar e salvar... para cada feição.
 
 <br>
 

@@ -4,10 +4,10 @@ site_author: Michel Metran
 site_description: A FBDS (Fundação Brasileira para o Desenvolvimento Sustentável).....
 site_url: https://fbds.readthedocs.io/
 copyright: |
-  &copy; 2025 <a href="https://github.com/michelmetran"  target="_blank" rel="noopener">Michel Metran</a>
+  &copy; 2026 <a href="https://github.com/michelmetran"  target="_blank" rel="noopener">Michel Metran</a>
 
 # GitHub Repo Link
-repo_url: https://github.com/michelmetran/pyESAJ
+repo_url: https://github.com/open-geodata/pyFBDS
 
 docs_dir: "docs" # Default docs
 site_dir: "site" # Default site
@@ -36,7 +36,7 @@ theme:
   features:
     - navigation.path
     - navigation.top
-    #- navigation.tabs
+    - navigation.tabs
     - navigation.sections
     - navigation.instant
     - navigation.instant.prefetch

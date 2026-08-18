@@ -5,7 +5,7 @@
 [![Read the Docs](https://img.shields.io/readthedocs/pyFBDS?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyFBDS.readthedocs.io/)
 [![Publish Python to PyPI](https://github.com/michelmetran/pyFBDS/actions/workflows/publish-to-pypipoetry.yml/badge.svg)](https://github.com/michelmetran/pyFBDS/actions/workflows/publish-to-pypipoetry.yml)
 
-_Scripts_ para obter dados espaciais da Fundação Brasileira para o Desenvolvimento Sustentável (FBDS). Veja mais na documentação:
+_Scripts_ para obter dados espaciais do [**repositório público de mapas e _shapefiles_ para _download_**](https://geo.fbds.org.br/). Veja mais na documentação:
 
 > [https://pyFBDS.readthedocs.io/](https://pyFBDS.readthedocs.io/)
 
