@@ -21,8 +21,11 @@ nav:
       - <i>Framework</i>: pages/framework.md
   # - Como Instalar?: pages/como-instalar.md
   - Como Usar?:
-      - Classe FBDS: scripts/requests/01_lxml.ipynb
-      - <i>Loop</i>: scripts/requests/01_lxml.ipynb
+      - <i>POST</i>: scripts/post/01_post.ipynb
+  - Como Usar? (<i>deprecated</i>):
+      - Aboragem LXML:
+          - Lista <i>Links</i>: scripts/requests/01_lxml.ipynb
+          - <i>Loop</i>: scripts/requests/02_loop.ipynb
 
   #- Histórico: pages/histórico.md
   #- Como Contribuir?: pages/como-contribuir.md
