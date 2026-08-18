@@ -4,6 +4,10 @@ data/input/down
 data/input/tab_temp
 data/input/temp_files
 data/output/
+.lixo/
+
+
+*.sqlite
 
 # Scrapy
 scrapy/
