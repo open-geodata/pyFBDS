@@ -15,15 +15,15 @@ site_dir: "site" # Default site
 # NavBar
 # Opcional
 nav:
-  - Home: index.md
+  - Home:
+      - Home: index.md
+      - Abordagens: pages/abordagens.md
+      - <i>Framework</i>: pages/framework.md
   # - Como Instalar?: pages/como-instalar.md
-  # - Como Usar?:
-  #     - Exemplos: pages/como-usar.md
-  #     - Navegador/Driver: scripts/driver.ipynb
-  #     - Login: scripts/login.ipynb
-  #     - Dados Cadastrais: scripts/cadastro.ipynb
-  #     - Gerenciamento de Perfil: scripts/gerenciamento_perfil.ipynb
-  #     - Consulta de Processos: scripts/consulta_processo.ipynb
+  - Como Usar?:
+      - Navegador/Driver: scripts/requests/01_lxml.ipynb
+      - Login: scripts/login.ipynb
+      - Dados Cadastrais: scripts/cadastro.ipynb
   #- Histórico: pages/histórico.md
   #- Como Contribuir?: pages/como-contribuir.md
   #- Page Object Model: pages/pacote.md
