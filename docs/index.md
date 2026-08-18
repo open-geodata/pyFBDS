@@ -1,6 +1,6 @@
 [![Repo](https://img.shields.io/badge/GitHub-repo-blue?logo=github&logoColor=f5f5f5)](https://github.com/open-geodata/pyFBDS)
 [![PyPI - Version](https://img.shields.io/pypi/v/pyFBDS?logo=pypi&label=PyPI&color=blue)](https://pypi.org/project/pyFBDS/)<br>
-[![Read the Docs](https://img.shields.io/readthedocs/pyFBDS?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyfbds.readthedocs.io/)
+[![Read the Docs](https://img.shields.io/readthedocs/pyfbds/latest?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyfbds.readthedocs.io/)
 [![Publish Python to PyPI](https://github.com/open-geodata/pyFBDS/actions/workflows/publish-to-pypi-uv.yml/badge.svg)](https://github.com/open-geodata/pyFBDS/actions/workflows/publish-to-pypi-uv.yml)
 
 Em novembro de 2022 surgiu a necessidade/curiosidade de melhor compreender os dados de hidrologia e uso do solo disponibilizados pela [Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)](https://www.fbds.org.br). Os dados são utilizados em projetos de pesquisa (Biota-Síntese e outros) e são disponibilizados em um [**repositório público de mapas e _shapefiles_ para _download_**](https://geo.fbds.org.br/).
