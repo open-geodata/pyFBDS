@@ -1,6 +1,6 @@
 [project]
 name = "pyFBDS"
-version = "0.1.2"
+version = "0.1.3"
 description = "Pacote e _scripts_ para obter dados espaciais do [**repositório público de mapas e _shapefiles_ para _download_**](https://geo.fbds.org.br/) disponibilizados pela [Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)](https://www.fbds.org.br)"
 readme = "README.md"
 requires-python = ">=3.12"
