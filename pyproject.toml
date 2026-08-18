@@ -1,0 +1,29 @@
+[project]
+name = "fbds"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # https://pypi.org/project/requests/
+    "requests>=2.32.5",
+    # https://pypi.org/project/requests-cache/
+    "requests-cache>=1.2.1",
+    # https://pypi.org/project/tqdm/
+    "tqdm>=4.67.1",
+    # https://pypi.org/project/lxml/
+    "lxml>=6.0.0",
+    "ipywidgets>=8.1.8",
+    "aiohttp>=3.13.2",
+    "nest-asyncio>=1.6.0",
+    "pandas>=2.3.3",
+    "selenium>=4.38.0",
+]
+
+[dependency-groups]
+dev = ["notebook>=7.4.7"]
+docs = [
+    "mkdocs-jupyter>=0.25.1",
+    "mkdocs-material[imaging]>=9.6.23",
+    "mkdocs-pdf>=0.1.2",
+]

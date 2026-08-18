@@ -1,6 +1,6 @@
 # Fundação Brasileira para o Desenvolvimento Sustentável - FBDS
 
-- [GitHub](https://github.com/open-geodata/br_fbds)
+[![Repo](https://img.shields.io/badge/GitHub-repo-blue?logo=github&logoColor=f5f5f5)](https://github.com/open-geodata/br_fbds)
 
 <br>
 
@@ -29,7 +29,7 @@ Abaixo segue informações obtidas no _site_ da Fundação:
 
 <br>
 
-![qgis](docs/imgs/qgis.png)
+![qgis](./docs/assets/imgs/qgis.png)
 
 <br>
 
@@ -56,17 +56,17 @@ A concepção empregada foi obter a lista dos arquivos em formato tabular (_.csv
 Usando o [_./scripts_/**01_get_data.ipynb**](scripts/01_get_data.ipynb), foi utilizada a seguinte concepção: Para criar a lista de arquivos, fiz com auxílio do _selenium_. Com o _driver_ eram realizados os seguintes procedimentos:
 
 1. Listar todos as **Subpastas** e **Arquivos** de um diretório raiz;
-2. Para cada **Subpasta** encontrada, entra-se nela, e repetir o procedimento de listar **Arquivos**), retornando para a pasta anterior ao final
+2. Para cada **Subpasta** encontrada, entra-se nela, e repetir o procedimento de listar **Arquivos**, retornando para a pasta anterior ao final
 3. Fazia isso de modo em _loop_, utilizando uma função recursiva.
 4. A cada iteração, todas as URLs apresentadas eram colecionadas em um tabela _.csv_.
 
 <br>
 
-![Abordagem_1](docs/imgs/abordagem_1.gif)
+![Abordagem_1](./docs/assets/imgs/abordagem_1.gif)
 
 <br>
 
-Uma vez com todos os links, foi realizado o download usando o JDownloder, com arquivo [_scripts_/**03_download_list_files.ipynb**](scripts/03_download_list_files.ipynb)
+Uma vez com todos os _links_, foi realizado o _download_ usando o JDownloder, com arquivo [_scripts_/**03_download_list_files.ipynb**](scripts/03_download_list_files.ipynb)
 
 <br>
 
@@ -82,7 +82,7 @@ A partir do [diretório do Estado de São Paulo](https://geo.fbds.org.br/SP/), c
 
 <br>
 
-![Abordagem_2](docs/imgs/abordagem_2.gif)
+![Abordagem_2](./docs/assets/imgs/abordagem_2.gif)
 
 <br>
 
