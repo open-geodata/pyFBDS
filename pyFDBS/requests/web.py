@@ -1,5 +1,5 @@
 """
-Summary
+Módulo com classe que uso o LXML massivamente
 """
 
 from pathlib import Path
@@ -48,7 +48,7 @@ class FBDS:
 
     def get_states(self) -> list[dict]:
         """
-        
+
 
         :return: _description_
         :rtype: list[dict]

@@ -7,10 +7,12 @@ from pathlib import Path
 
 import aiohttp
 from tqdm.asyncio import tqdm_asyncio
-from tqdm.notebook import tqdm
 
-from .cache import make_request
 from .logger import FBDSLogger
+
+#from tqdm.notebook import tqdm
+
+#from .cache import make_request
 
 
 async def download_file_async(session, url_info, output_dir):
@@ -27,9 +29,9 @@ async def download_file_async(session, url_info, output_dir):
         Diretório onde salvar o arquivo
     """
     try:
-        url = url_info['url']
+        url = url_info["url"]
         # Remove o base URL e usa o caminho relativo
-        relative_path = url.replace('https://geo.fbds.org.br/', '')
+        relative_path = url.replace("https://geo.fbds.org.br/", "")
         output_path = Path(output_dir) / relative_path
 
         # Cria o diretório se não existir
@@ -41,22 +43,22 @@ async def download_file_async(session, url_info, output_dir):
                 content = await response.read()
 
                 # Salva o arquivo
-                with open(output_path, 'wb') as f:
+                with open(output_path, "wb") as f:
                     f.write(content)
 
                 result = {
-                    'nome': url_info['name'],
-                    'status': 'sucesso',
-                    'size': len(content),
+                    "nome": url_info["name"],
+                    "status": "sucesso",
+                    "size": len(content),
                 }
             else:
                 result = {
-                    'nome': url_info['name'],
-                    'status': 'erro',
-                    'erro': f'Status code: {response.status}',
+                    "nome": url_info["name"],
+                    "status": "erro",
+                    "erro": f"Status code: {response.status}",
                 }
     except Exception as e:
-        result = {'nome': url_info['name'], 'status': 'erro', 'erro': str(e)}
+        result = {"nome": url_info["name"], "status": "erro", "erro": str(e)}
 
     return result
 
@@ -96,9 +98,7 @@ async def download_files_async(url_list, output_dir, max_concurrent=5):
     return results
 
 
-def download_files_parallel(
-    url_list, output_dir, max_concurrent=5, logger=None
-):
+def download_files_parallel(url_list, output_dir, max_concurrent=5, logger=None):
     """
     Wrapper para executar o download assíncrono
 

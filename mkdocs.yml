@@ -21,9 +21,9 @@ nav:
       - <i>Framework</i>: pages/framework.md
   # - Como Instalar?: pages/como-instalar.md
   - Como Usar?:
-      - Navegador/Driver: scripts/requests/01_lxml.ipynb
-      - Login: scripts/login.ipynb
-      - Dados Cadastrais: scripts/cadastro.ipynb
+      - Classe FBDS: scripts/requests/01_lxml.ipynb
+      - <i>Loop</i>: scripts/requests/01_lxml.ipynb
+
   #- Histórico: pages/histórico.md
   #- Como Contribuir?: pages/como-contribuir.md
   #- Page Object Model: pages/pacote.md
