@@ -5,7 +5,7 @@ data/input/tab_temp
 data/input/temp_files
 data/output/
 .lixo/
-#logs/
+logs/
 
 
 *.sqlite
