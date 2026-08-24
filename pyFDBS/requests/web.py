@@ -2,23 +2,59 @@
 Módulo com classe que uso o LXML massivamente
 """
 
+import tempfile
+from datetime import timedelta
 from pathlib import Path
 from urllib.parse import urljoin
 
+import requests_cache
 from lxml import html
-
-from .cache import make_request
 
 
 class FBDS:
-    def __init__(self) -> None:
+    def __init__(self, temp_path: Path | str) -> None:
         self.url_base = "https://geo.fbds.org.br/"
 
+        # Cria pasta temporária
+        if temp_path is None:
+            temp_path = tempfile.gettempdir()
+        temp_path = Path(temp_path)
+        temp_path.mkdir(exist_ok=True, parents=True)
+
+        # Configuração do cache
+        self.session = requests_cache.CachedSession(
+            cache_name=str(temp_path / "fbds_cache"),  # Nome do arquivo de cache
+            backend="sqlite",  # Backend para armazenamento (SQLite)
+            expire_after=timedelta(days=3),  # Cache expira após X dias
+            allowable_methods=("GET", "POST"),  # Métodos HTTP permitidos
+        )
+
     def get_links(self, url, ignore_first):
+        """
+        Obtém todos os links de uma página e opcionalmente os tamanhos das pastas
+
+        Parameters:
+        -----------
+        url : str
+            URL da página
+        get_size : bool
+            Se True, tenta obter o tamanho das pastas
+        """
         # Usa a função make_request com cache
-        response, is_cached = make_request(url)
-        response.raise_for_status()
-        tree = html.fromstring(response.content)
+        # response, is_cached = make_request(url=url)
+        r = self.session.get(url=url)
+
+        origem = "Cache" if r.from_cache else "WEB"
+        print(f"[{origem}]")
+
+        r.raise_for_status()
+        tree = html.fromstring(html=r.content)
+
+        # Links a ignorar
+        ignore_links = [
+            "http://browsehappy.com",
+            "https://larsjung.de/h5ai/",
+        ]
 
         list_folders = []
         folders = tree.xpath("//tr")
@@ -27,6 +63,11 @@ class FBDS:
         folders = folders[ignore_first:]
 
         for folder in folders:
+            link = folder.xpath(".//a/@href")[0]
+            if any(ignore in link for ignore in ignore_links):
+                print("Entrei aqui!?")
+                pass
+
             # Get Data
             link = folder.xpath('.//td[@class="fb-n"]/a/@href')[0]
             tipo = folder.xpath('.//td[@class="fb-i"]/img/@src')[0]
@@ -48,8 +89,6 @@ class FBDS:
 
     def get_states(self) -> list[dict]:
         """
-
-
         :return: _description_
         :rtype: list[dict]
         """
@@ -67,12 +106,12 @@ class FBDS:
 
     def get_state(self, uf=None):
         states = self.get_states()
-        return [x for x in states if x["name"] == uf][0]
+        return next(x for x in states if x["name"] == uf)
 
     def get_municipalitie(self, municipality=None, uf=None):
         municipalities = self.get_municipalities(uf=uf)
-        return [x for x in municipalities if x["name"] == municipality][0]
+        return next(x for x in municipalities if x["name"] == municipality)
 
     def get_layer(self, municipality=None, uf=None, layer=None):
         layers = self.get_layers(municipality=municipality, uf=uf)
-        return [x for x in layers if x["name"] == layer][0]
+        return next(x for x in layers if x["name"] == layer)

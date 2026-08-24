@@ -24,10 +24,10 @@ nav:
       - <i>POST</i>: scripts/post/01_post.ipynb
   - Como Usar? (<i>deprecated</i>):
       - Abordagem LXML:
-          - Lista <i>Links</i>: scripts/requests/01_lxml.ipynb
-          - <i>Loop</i>: scripts/requests/02_loop.ipynb
+          - Lista <i>Links</i>: scripts/lxml/01_lxml.ipynb
+          - <i>Loop</i>: scripts/lxml/02_loop.ipynb
       - Abordagem <br>Scrapping</br>:
-          - Lista <i>Links</i>: scripts/requests/01_lxml.ipynb
+          - Lista <i>Links</i>: scripts/lxml/01_lxml.ipynb
 
   #- Histórico: pages/histórico.md
   #- Como Contribuir?: pages/como-contribuir.md
