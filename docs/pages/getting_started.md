@@ -2,7 +2,7 @@
 
 ## Como Instalar?
 
-O pacote está dispnível no [PyPI](https://pypi.org/project/pyFBDS).
+O pacote está disponível no [PyPI](https://pypi.org/project/pyFBDS).
 
 ```shell
 pip3 install pyFBDS
@@ -15,6 +15,8 @@ pip3 install pyFBDS
 ## Como Usar?
 
 Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos, consultar o _script_ [01_post.ipynb](./docs/scripts/post/01_post.ipynb).
+
+Caso queira testar rapidamente, é possível usar o [Google Colab](https://colab.research.google.com/github/open-geodata/pyFBDS/blob/main/docs/scripts/post/01_post.ipynb).
 
 ```python
 # Importa pacote

@@ -22,8 +22,7 @@ nav:
       - Abordagens: pages/abordagens.md
       - <i>Framework</i>: pages/framework.md
 
-  - Como Usar?:
-      - <i>POST</i>: scripts/post/01_post.ipynb
+  - Como Usar?: scripts/post/01_post.ipynb
 
   - Como Usar? (<i>deprecated</i>):
       - <i>Web Scraping</i>:

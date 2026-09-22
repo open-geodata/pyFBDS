@@ -27,7 +27,10 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["notebook>=7.4.7"]
+dev = [
+    #"contextily>=1.7.1",
+    "notebook>=7.4.7",
+]
 docs = [
     "mkdocs-jupyter>=0.25.1",
     "mkdocs-material[imaging]>=9.6.23",
