@@ -1,3 +1,3 @@
-from .requests.download import download_files_parallel, download_files_async
-from .requests.logger import FBDSLogger
-from .requests.web import FBDS
+from .logger import FBDSLogger
+from .lxml.download import download_files_async, download_files_parallel
+

@@ -1,6 +1,6 @@
 [project]
 name = "pyFBDS"
-version = "0.1.8"
+version = "0.1.9"
 description = "Pacote e scripts para obter dados espaciais da Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -22,6 +22,8 @@ dependencies = [
     "folium>=0.12",
     "matplotlib>=3.11.2",
     "mapclassify>=2.11.0",
+    # https://more-itertools.readthedocs.io/en/stable/
+    "more-itertools>=11.1.0",
 ]
 
 [dependency-groups]

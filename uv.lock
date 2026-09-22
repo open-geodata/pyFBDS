@@ -1765,6 +1765,15 @@ wheels = [
 ]
 
 [[package]]
+name = "more-itertools"
+version = "11.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/1d/f4da6f02cdffe04d6362210b807146a26044c88d839208aec273bb0d9184/more_itertools-11.1.0.tar.gz", hash = "sha256:48e8f4d9e7e5878571ecf6f2b4e57634f93cd474cc8cfbd2376f2d11b396e30d", size = 145772, upload-time = "2026-05-22T14:14:29.909Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e8/3d/1087453384dbde46a8c7f9356eead2c58be8a7bf156bca40243377c85715/more_itertools-11.1.0-py3-none-any.whl", hash = "sha256:4b65538ae22f6fed0ce4874efd317463a7489796a0939fa66824dd542125a192", size = 72226, upload-time = "2026-05-22T14:14:28.824Z" },
+]
+
+[[package]]
 name = "multidict"
 version = "6.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2387,7 +2396,7 @@ wheels = [
 
 [[package]]
 name = "pyfbds"
-version = "0.1.7"
+version = "0.1.8"
 source = { virtual = "." }
 dependencies = [
     { name = "aiohttp" },
@@ -2397,6 +2406,7 @@ dependencies = [
     { name = "lxml" },
     { name = "mapclassify" },
     { name = "matplotlib" },
+    { name = "more-itertools" },
     { name = "nest-asyncio" },
     { name = "pandas" },
     { name = "requests" },
@@ -2424,6 +2434,7 @@ requires-dist = [
     { name = "lxml", specifier = ">=6.0.0" },
     { name = "mapclassify", specifier = ">=2.11.0" },
     { name = "matplotlib", specifier = ">=3.11.2" },
+    { name = "more-itertools", specifier = ">=11.1.0" },
     { name = "nest-asyncio", specifier = ">=1.6.0" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "requests", specifier = ">=2.32.5" },

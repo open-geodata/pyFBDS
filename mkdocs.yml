@@ -22,7 +22,6 @@ nav:
   # - Como Instalar?: pages/como-instalar.md
   - Como Usar?:
       - <i>POST</i>: scripts/post/01_post.ipynb
-      - <i>POST</i> Full: scripts/post/02_post_full.ipynb
   - Como Usar? (<i>deprecated</i>):
       - Abordagem LXML:
           - Lista <i>Links</i>: scripts/lxml/01_lxml.ipynb

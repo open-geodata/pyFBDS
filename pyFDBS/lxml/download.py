@@ -8,14 +8,10 @@ from pathlib import Path
 import aiohttp
 from tqdm.asyncio import tqdm_asyncio
 
-from .logger import FBDSLogger
-
-# from tqdm.notebook import tqdm
-
-# from .cache import make_request
+from ..logger import FBDSLogger
 
 
-async def download_file_async(session, url_info, output_dir):
+async def download_file_async(session, url_info, output_path):
     """
     Download assíncrono de um único arquivo
 
@@ -32,7 +28,7 @@ async def download_file_async(session, url_info, output_dir):
         url = url_info["url"]
         # Remove o base URL e usa o caminho relativo
         relative_path = url.replace("https://geo.fbds.org.br/", "")
-        output_path = Path(output_dir) / relative_path
+        output_path = Path(output_path) / relative_path
 
         # Cria o diretório se não existir
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -43,7 +39,7 @@ async def download_file_async(session, url_info, output_dir):
                 content = await response.read()
 
                 # Salva o arquivo
-                with open(output_path, "wb") as f:
+                with open(file=output_path, mode="wb") as f:
                     f.write(content)
 
                 result = {
@@ -63,7 +59,7 @@ async def download_file_async(session, url_info, output_dir):
     return result
 
 
-async def download_files_async(url_list, output_dir, max_concurrent=5):
+async def download_files_async(url_list, output_path, max_concurrent=5):
     """
     Download assíncrono de múltiplos arquivos
 
@@ -83,7 +79,7 @@ async def download_files_async(url_list, output_dir, max_concurrent=5):
         # Cria a lista de tarefas
         tasks = []
         for url_info in url_list:
-            task = download_file_async(session, url_info, output_dir)
+            task = download_file_async(session, url_info, output_path)
             tasks.append(task)
 
         # Executa as tasks com barra de progresso
@@ -98,21 +94,27 @@ async def download_files_async(url_list, output_dir, max_concurrent=5):
     return results
 
 
-def download_files_parallel(url_list, output_dir, max_concurrent=5, logger=None):
+def download_files_parallel(
+    url_list: list,
+    output_path,
+    max_concurrent=5,
+    logger=None,
+):
     """
     Wrapper para executar o download assíncrono
 
-    Parameters:
-    -----------
-    url_list : list
-        Lista de dicionários com informações dos arquivos
-    output_dir : str or Path
-        Diretório onde salvar os arquivos
-    max_concurrent : int
-        Número máximo de downloads simultâneos
-    logger : FBDSLogger, optional
-        Logger existente para usar. Se None, cria um novo.
+    :param url_list: Lista de dicionários com informações dos arquivos
+    :type url_list: list
+    :param output_dir: Diretório onde salvar os arquivos
+    :type output_dir: str or Path
+    :param max_concurrent: Número máximo de downloads simultâneos
+    :type max_concurrent: int, optional
+    :param logger: Logger existente para usar. Se None, cria um novo.
+    :type logger: FBDSLogger, optional
+    :return: _description_
+    :rtype: _type_
     """
+
     try:
         # Usa o logger fornecido ou cria um novo
         if logger is None:
@@ -136,7 +138,11 @@ def download_files_parallel(url_list, output_dir, max_concurrent=5, logger=None)
 
         # Executa o download assíncrono
         results = loop.run_until_complete(
-            download_files_async(url_list, output_dir, max_concurrent)
+            download_files_async(
+                url_list=url_list,
+                output_path=output_path,
+                max_concurrent=max_concurrent,
+            )
         )
 
         # Analisa e registra os resultados
@@ -144,5 +150,5 @@ def download_files_parallel(url_list, output_dir, max_concurrent=5, logger=None)
         return results
 
     except Exception as e:
-        logger.logger.error(f"Erro durante o download: {str(e)}")
+        logger.logger.error(f"Erro durante o download: {e!s}")
         return []

@@ -1,8 +1,7 @@
 """
-Sistema de logs para a aplicação FBDS
+Módulo para logs
 """
 
-import json
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -16,7 +15,7 @@ class FBDSLogger:
     _instance = None
     _initialized = False
 
-    def __new__(cls, log_dir=None, new_session=False):
+    def __new__(cls, log_dir=None, new_session=False, console=True):
         # Verifica se já existe uma instância ou se foi pedida uma nova sessão
         if cls._instance is None or new_session:
             # Cria uma nova instância se não existir ou se new_session=True
@@ -26,7 +25,7 @@ class FBDSLogger:
         # Retorna a instância (seja ela nova ou existente)
         return cls._instance
 
-    def __init__(self, log_dir=None, new_session=False):
+    def __init__(self, log_dir=None, new_session=False, console=True):
         if not self._initialized or new_session:
             # Usa o diretório fornecido ou o padrão
             self.log_dir = Path(log_dir) if log_dir else DEFAULT_LOG_DIR
@@ -41,7 +40,7 @@ class FBDSLogger:
                 self.logger.removeHandler(handler)
 
             # Cria handlers
-            self._setup_handlers()
+            self._setup_handlers(console=console)
 
             # Dicionário para armazenar estatísticas
             self.stats = {
@@ -56,7 +55,7 @@ class FBDSLogger:
 
             self._initialized = True
 
-    def _setup_handlers(self):
+    def _setup_handlers(self, console=True):
         # Handler para arquivo
         # Usa apenas a data, não o timestamp completo
         date_str = datetime.now().strftime("%Y%m%d")
@@ -66,10 +65,6 @@ class FBDSLogger:
         file_handler = logging.FileHandler(self.log_file, encoding="utf-8", mode="a")
         file_handler.setLevel(logging.INFO)
 
-        # Handler para console
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
-
         # Formato do log
         formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -77,11 +72,14 @@ class FBDSLogger:
         )
 
         file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
 
         # Adiciona handlers ao logger
         self.logger.addHandler(file_handler)
-        self.logger.addHandler(console_handler)
+        if console:
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.INFO)
+            console_handler.setFormatter(formatter)
+            self.logger.addHandler(console_handler)
 
     def start_download_session(self):
         """Inicia uma nova sessão de download"""
@@ -108,9 +106,9 @@ class FBDSLogger:
         )
         if self.stats["errors"] > 0:
             self.logger.error(f"Erros: {self.stats['errors']} de {self.stats['total']}")
-        # self.logger.info(
-        #     f"Arquivos do cache: {self.stats['cached']} de {self.stats['total']}"
-        # )
+        self.logger.info(
+            f"Arquivos do cache: {self.stats['cached']} de {self.stats['total']}"
+        )
         self.logger.info(f"Duração total: {duration}")
 
         # Se houver erros, registra eles
@@ -118,18 +116,6 @@ class FBDSLogger:
             self.logger.error("Erros encontrados:")
             for error in self.stats["errors_list"]:
                 self.logger.error(f"- {error['nome']}: {error['erro']}")
-
-        # # Salva as estatísticas em JSON
-        # stats_file = (
-        #     self.log_dir
-        #     / f'stats_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-        # )
-        # with open(stats_file, 'w', encoding='utf-8') as f:
-        #     # Converte datetime para string
-        #     stats_dict = self.stats.copy()
-        #     stats_dict['start_time'] = self.stats['start_time'].isoformat()
-        #     stats_dict['end_time'] = self.stats['end_time'].isoformat()
-        #     json.dump(stats_dict, f, ensure_ascii=False, indent=4)
 
     def log_result(self, result):
         """Registra o resultado de um download"""
@@ -160,3 +146,7 @@ class FBDSLogger:
 
         self.end_download_session()
         return self.stats
+
+
+# if __name__ == "__main__":
+#     print(PROJECT_ROOT)
