@@ -12,6 +12,7 @@ logs/
 
 # Scrapy
 scrapy/
+.old/
 
 # IDEs
 .vscode/

@@ -4,11 +4,14 @@ Módulo com classe que uso o LXML massivamente
 
 import tempfile
 from datetime import timedelta
+from difflib import SequenceMatcher, get_close_matches
 from pathlib import Path
 from urllib.parse import urljoin
 
 import requests_cache
 from lxml import html
+
+from ..compare import ComparadorTexto
 
 
 class FBDS:
@@ -29,7 +32,7 @@ class FBDS:
             allowable_methods=("GET", "POST"),  # Métodos HTTP permitidos
         )
 
-    def get_links(self, url, ignore_first):
+    def get_links(self, url, ignore_first) -> list:
         """
         Obtém todos os links de uma página e opcionalmente os tamanhos das pastas
 
@@ -94,21 +97,64 @@ class FBDS:
         """
         return self.get_links(url=self.url_base, ignore_first=1)
 
-    def get_municipalities(self, uf):
+    @property
+    def states(self):
+        """
+        Retorna a lista de estados
+        """
+        return [x["name"] for x in self.get_states() if len(x["name"]) == 2]
+
+    def municipios(self, uf):
+        return [x["name"] for x in self.get_municipalities(uf=uf)]
+
+    def get_municipalities(self, uf) -> list:
+
+        # Confere se foi definido um estado válido
+        if uf not in self.states:
+            raise RuntimeError(f"Precisa ser estado válido\n{', '.join(self.states)}")
+
         state = self.get_state(uf=uf)
         url = state["url"]
         return self.get_links(url=url, ignore_first=2)
 
-    def get_layers(self, municipality, uf):
-        municipalitie = self.get_municipalitie(municipality=municipality, uf=uf)
+    def get_layers(self, municipality, uf) -> list:
+        municipalitie = self.get_municipalitie(
+            municipality=municipality,
+            uf=uf,
+        )
         url = municipalitie["url"]
         return self.get_links(url=url, ignore_first=2)
 
     def get_state(self, uf=None):
+
+        # Confere se foi definido um estado válido
+        if uf not in self.states:
+            raise RuntimeError(f"Precisa ser estado válido\n{', '.join(self.states)}")
+
         states = self.get_states()
         return next(x for x in states if x["name"] == uf)
 
     def get_municipalitie(self, municipality=None, uf=None):
+
+        # Confere que é string
+        if not isinstance(municipality, str):
+            raise TypeError("Precisa ser string")
+
+        # Compara texto
+        comparador = ComparadorTexto(limite_minimo=0.2)
+        # Retorna os 3 mais semelhantes
+        top_x = comparador.buscar_top_x_semelhantes(
+            alvo=municipality,
+            opcoes=self.municipios(uf=uf),
+            top_x=5,
+        )
+
+        # Confere se foi definido um municicipio válido
+        if municipality not in self.municipios(uf=uf):
+            raise RuntimeError(
+                f"Precisa ser municipio válido\nTalvez algum destes:\n{'\n'.join([x for x, _ in top_x])}"
+            )
+
         municipalities = self.get_municipalities(uf=uf)
         return next(x for x in municipalities if x["name"] == municipality)
 

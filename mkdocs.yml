@@ -22,12 +22,13 @@ nav:
   # - Como Instalar?: pages/como-instalar.md
   - Como Usar?:
       - <i>POST</i>: scripts/post/01_post.ipynb
+      - <i>POST</i> Full: scripts/post/02_post_full.ipynb
   - Como Usar? (<i>deprecated</i>):
       - Abordagem LXML:
           - Lista <i>Links</i>: scripts/lxml/01_lxml.ipynb
-          - <i>Loop</i>: scripts/lxml/02_loop.ipynb
+          - <i>Loop</i>: scripts/lxml/02_lxml_loop.ipynb
       - Abordagem <br>Scrapping</br>:
-          - Lista <i>Links</i>: scripts/lxml/01_lxml.ipynb
+          - Lista <i>Links</i>: scripts/scraper/01_get_data.ipynb
 
   #- Histórico: pages/histórico.md
   #- Como Contribuir?: pages/como-contribuir.md
