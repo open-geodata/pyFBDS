@@ -1,10 +1,8 @@
 # Abordagens
 
-<br>
+## _Webscrapping_ (deprecated)
 
----
-
-## Primeira Abordagem (_ruim e, portanto, descontinuada_)
+### Primeira Abordagem (_ruim e, portanto, descontinuada_)
 
 A concepção empregada foi obter a lista dos arquivos em formato tabular (_.csv_) para, posteriormente, fazer o _download_.
 
@@ -15,9 +13,7 @@ Usando o [_./scripts_/**01_get_data.ipynb**](scripts/01_get_data.ipynb), foi uti
 3. Fazia isso de modo em _loop_, utilizando uma função recursiva.
 4. A cada iteração, todas as URLs apresentadas eram colecionadas em um tabela _.csv_.
 
-<br>
-
-![Abordagem_1](./assets/imgs/abordagem_1.gif)
+![Abordagem_1](./../assets/imgs/abordagem_1.gif)
 
 <br>
 
@@ -35,9 +31,7 @@ A partir do [diretório do Estado de São Paulo](https://geo.fbds.org.br/SP/), c
 2. Usando os conceitos de [_ActionChains_](https://www.selenium.dev/selenium/docs/api/py/webdriver/selenium.webdriver.common.action_chains.html), passar o mouse sobre a pasta e clicar nela.
 3. Clicar no botão "Fazer Download".
 
-<br>
-
-![Abordagem_2](./assets/imgs/abordagem_2.gif)
+![Abordagem_2](./../assets/imgs/abordagem_2.gif)
 
 <br>
 
@@ -50,4 +44,14 @@ Após isso, com uso do [_scripts_/**02_adjust_data.ipynb**](scripts/02_adjust_da
 5. Listar os arquivos _fake shapefile_ e ajusta-los, para que direcionem ao arquivo dentro do _.tar_
 6. Testar e leitura dos arquivos pelo geopandas, conectar e salvar... para cada feição.
 
+<br>
 
+---
+
+## LXML (deprecated)
+
+<br>
+
+---
+
+## POST

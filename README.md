@@ -5,9 +5,11 @@
 [![Read the Docs](https://img.shields.io/readthedocs/pyfbds/latest?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyfbds.readthedocs.io/)
 [![Publish Python to PyPI](https://github.com/open-geodata/pyFBDS/actions/workflows/publish-to-pypi-uv.yml/badge.svg)](https://github.com/open-geodata/pyFBDS/actions/workflows/publish-to-pypi-uv.yml)
 
-Pacote e _scripts_ para obter dados espaciais do [**repositório público de mapas e _shapefiles_ para _download_**](https://geo.fbds.org.br/) disponibilizados pela [Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)](https://www.fbds.org.br). Veja mais na documentação:
+Pacote e _scripts_ para obter dados espaciais do [**repositório público de mapas e _shapefiles_ para _download_**](https://geo.fbds.org.br/) disponibilizados pela [Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)](https://www.fbds.org.br).
 
-> [https://pyFBDS.readthedocs.io/](https://pyFBDS.readthedocs.io/)
+Veja mais na documentação:
+
+> [https://pyFBDS.readthedocs.io](https://pyFBDS.readthedocs.io/)
 
 <br>
 
@@ -31,24 +33,20 @@ pip3 install pyFBDS
 
 ## Como Usar?
 
-Abaixo alguns usos simples do pacote.
+Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos, consultar o _script_ [01_post.ipynb](./docs/scripts/post/01_post.ipynb).
 
-```shell
+```python
 # Importa pacote
-import pyFBDS
+from pyFDBS.post import FBDS
 
-# Instancia Objeto
-fbds = pyFBDS.Repo(
-    output_path='.',
-    temp_path='.',
-    log_path='.',
-)
+# Instancia FBDS
+fbds = FBDS(output_path=output_path)
 
 # Faz Download dos Dados para output_path
-fbds.download_data(municipio='SANTOS', estado='SP')
+fbds.download(municipality='SANTOS', uf='SP')
 
 # Lê dados espaciais em formato geodataframe
-fbds.read_data(municipio='SANTOS', estado='SP')
+gdf = fbds.read_data(municipality='SANTOS', uf='SP', layer="APP_USO")
 ```
 
 <br>
@@ -57,7 +55,7 @@ fbds.read_data(municipio='SANTOS', estado='SP')
 
 ## _TODO_
 
-1. Ajustar os tipos de arquivos (Pontos, Polylines, Polygons), visto que na lista de arquivos surgiu uma feição curiosa:
+1. Ajustar os tipos de arquivos (Pontos, _Polylines_, _Polygons_), visto que na lista de arquivos surgiu uma feição curiosa:
    1. _RIOS_DUPLOS.shp_
    2. _RIOS*DUPLOS*.shp_
    3. _RIOS_DUPLOS_POL.shp_

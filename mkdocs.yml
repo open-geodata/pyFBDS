@@ -1,8 +1,8 @@
 # Basic
-site_name: FBDS
+site_name: pyFBDS
 site_author: Michel Metran
-site_description: A FBDS (Fundação Brasileira para o Desenvolvimento Sustentável).....
-site_url: https://fbds.readthedocs.io/
+site_description: Pacote e scripts para obter dados espaciais do repositório público de mapas e shapefiles para download disponibilizados pela Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)
+site_url: https://pyfbds.readthedocs.io/
 copyright: |
   &copy; 2026 <a href="https://github.com/michelmetran"  target="_blank" rel="noopener">Michel Metran</a>
 
@@ -17,24 +17,20 @@ site_dir: "site" # Default site
 nav:
   - Home:
       - Home: index.md
+      - <i>Getting Started</i>: pages/getting_started.md
+      - Histórico: pages/historico.md
       - Abordagens: pages/abordagens.md
       - <i>Framework</i>: pages/framework.md
-  # - Como Instalar?: pages/como-instalar.md
+
   - Como Usar?:
       - <i>POST</i>: scripts/post/01_post.ipynb
+
   - Como Usar? (<i>deprecated</i>):
-      - Abordagem LXML:
+      - <i>Web Scraping</i>:
+          - Lista <i>Links</i>: scripts/scraper/01_get_data.ipynb
+      - LXML:
           - Lista <i>Links</i>: scripts/lxml/01_lxml.ipynb
           - <i>Loop</i>: scripts/lxml/02_lxml_loop.ipynb
-      - Abordagem <br>Scrapping</br>:
-          - Lista <i>Links</i>: scripts/scraper/01_get_data.ipynb
-
-  #- Histórico: pages/histórico.md
-  #- Como Contribuir?: pages/como-contribuir.md
-  #- Page Object Model: pages/pacote.md
-  #- Bugs: pages/bugs.md
-  #- Intimações: pages/intimações.md
-  #- Me, Myself and I: pages/autor.md
 
 theme:
   # Breadcrumbs
