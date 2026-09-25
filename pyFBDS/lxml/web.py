@@ -2,13 +2,16 @@
 Módulo com classe que uso o LXML massivamente
 """
 
+import asyncio
 import tempfile
 from datetime import timedelta
 from pathlib import Path
 from urllib.parse import urljoin
 
+import aiohttp
 import requests_cache
 from lxml import html
+from tqdm.asyncio import tqdm_asyncio
 
 from ..compare import ComparadorTexto
 from ..logger import FBDSLogger
@@ -17,21 +20,27 @@ from ..logger import FBDSLogger
 class FBDS:
     def __init__(
         self,
-        temp_path: Path | str,
+        output_path: Path | str,
+        temp_path: Path | str | None = None,
         logger: FBDSLogger | None = None,
     ) -> None:
+        self.temp_path = Path(temp_path or tempfile.gettempdir())
+        self.output_path = Path(output_path)
         self.url_base = "https://geo.fbds.org.br/"
         self.logger = logger or FBDSLogger()
 
-        # Cria pasta temporária
-        if temp_path is None:
-            temp_path = tempfile.gettempdir()
-        temp_path = Path(temp_path)
-        temp_path.mkdir(exist_ok=True, parents=True)
+        self.temp_path.mkdir(exist_ok=True, parents=True)
+        self.output_path.mkdir(exist_ok=True, parents=True)
+
+        # # Cria pasta temporária
+        # if temp_path is None:
+        #     temp_path = tempfile.gettempdir()
+        # temp_path = Path(temp_path)
+        # temp_path.mkdir(exist_ok=True, parents=True)
 
         # Configuração do cache
         self.session = requests_cache.CachedSession(
-            cache_name=str(temp_path / "fbds_cache"),  # Nome do arquivo de cache
+            cache_name=str(self.temp_path / "fbds_cache"),  # Nome do arquivo de cache
             backend="sqlite",  # Backend para armazenamento (SQLite)
             expire_after=timedelta(days=3),  # Cache expira após X dias
             allowable_methods=("GET", "POST"),  # Métodos HTTP permitidos
@@ -115,7 +124,26 @@ class FBDS:
         :rtype: list
         """
         self.logger.logger.info("Obtendo estados")
-        return self.get_links(url=self.url_base, ignore_first=1)
+        list_states = self.get_links(url=self.url_base, ignore_first=1)
+
+        # Só pega as pastas que tem só suas letras (SP, RJ, PA, AC)
+        list_states = [x for x in list_states if len(x["name"]) == 2]
+        return list_states
+
+    def get_files(self) -> list[dict]:
+        """
+        Retorna lista contendo dicionários com informações sobre arquivos na raiz do geoportal,
+        de acordo com o que está disponível no [FBDS](https://geo.fbds.org.br/).
+
+        :return: Lista contendo dicionários com informações sobre arquivos.
+        :rtype: list
+        """
+        self.logger.logger.info("Obtendo estados")
+        list_states = self.get_links(url=self.url_base, ignore_first=1)
+
+        # Só pega as pastas que tem só suas letras (SP, RJ, PA, AC)
+        list_states = [x for x in list_states if len(x["name"]) != 2]
+        return list_states
 
     def get_state(self, uf):
         """
@@ -198,16 +226,18 @@ class FBDS:
         comparador = ComparadorTexto(limite_minimo=0.2)
 
         # Retorna os X mais semelhantes
+        municipios_uf = self.municipios(uf=uf)
         top_x = comparador.buscar_top_x_semelhantes(
             alvo=municipality,
-            opcoes=self.municipios(uf=uf),
+            opcoes=municipios_uf,
             top_x=5,
         )
 
         # Confere se foi definido um municicipio válido
-        if municipality not in self.municipios(uf=uf):
+        if municipality not in municipios_uf:
+            desc = "\n".join([f"{x} -> Similaridade de {y}" for x, y in top_x])
             raise RuntimeError(
-                f"Precisa ser municipio válido\nTalvez algum destes:\n{'\n'.join([x for x, _ in top_x])}"
+                f"Precisa ser municipio válido\nTalvez algum destes:\n{desc}"
             )
 
         municipalities = self.get_municipalities(uf=uf)
@@ -249,3 +279,151 @@ class FBDS:
 
         layers = self.get_layers(municipality=municipality, uf=uf)
         return next(x for x in layers if x["name"] == layer)
+
+    async def download_file_async(
+        self,
+        session,
+        url_info,
+    ):
+        """
+        Download assíncrono de um único arquivo
+
+        Parameters:
+        -----------
+        session : aiohttp.ClientSession
+            Sessão HTTP assíncrona
+        url_info : dict
+            Dicionário com informações do arquivo (url, name, etc)
+        output_dir : str or Path
+            Diretório onde salvar o arquivo
+        """
+        try:
+            url = url_info["url"]
+            # Remove o base URL e usa o caminho relativo
+            relative_path = url.replace("https://geo.fbds.org.br/", "")
+            output_path = Path(self.output_path) / relative_path
+
+            # Cria o diretório se não existir
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Faz o download
+            async with session.get(url) as response:
+                if response.status == 200:
+                    content = await response.read()
+
+                    # Salva o arquivo
+                    with open(file=output_path, mode="wb") as f:
+                        f.write(content)
+
+                    result = {
+                        "nome": url_info["name"],
+                        "status": "sucesso",
+                        "size": len(content),
+                    }
+                else:
+                    result = {
+                        "nome": url_info["name"],
+                        "status": "erro",
+                        "erro": f"Status code: {response.status}",
+                    }
+        except Exception as e:
+            result = {"nome": url_info["name"], "status": "erro", "erro": str(e)}
+
+        return result
+
+    async def download_files_async(
+        self,
+        url_list,
+        max_concurrent=5,
+    ):
+        """
+        Download assíncrono de múltiplos arquivos
+
+        Parameters:
+        -----------
+        url_list : list
+            Lista de dicionários com informações dos arquivos
+        output_dir : str or Path
+            Diretório onde salvar os arquivos
+        max_concurrent : int
+            Número máximo de downloads simultâneos
+        """
+        # Configura conexão com limite de conexões simultâneas
+        conn = aiohttp.TCPConnector(limit=max_concurrent)
+
+        async with aiohttp.ClientSession(connector=conn) as session:
+            # Cria a lista de tarefas
+            tasks = []
+            for url_info in url_list:
+                task = self.download_file_async(session, url_info)
+                tasks.append(task)
+
+            # Executa as tasks com barra de progresso
+            results = await tqdm_asyncio.gather(
+                *tasks,
+                desc="Downloading files",
+                total=len(tasks),
+                ascii=True,  # Melhor compatibilidade
+                mininterval=0.5,  # Atualiza a cada 0.5 segundos
+            )
+
+        return results
+
+    def download_files_parallel(
+        self,
+        url_list: list,
+        max_concurrent=5,
+        logger=None,
+    ):
+        """
+        Wrapper para executar o download assíncrono
+
+        :param url_list: Lista de dicionários com informações dos arquivos
+        :type url_list: list
+        :param output_dir: Diretório onde salvar os arquivos
+        :type output_dir: str or Path
+        :param max_concurrent: Número máximo de downloads simultâneos
+        :type max_concurrent: int, optional
+        :param logger: Logger existente para usar. Se None, cria um novo.
+        :type logger: FBDSLogger, optional
+        :return: _description_
+        :rtype: _type_
+        """
+
+        try:
+            # Usa o logger fornecido ou cria um novo
+            # if logger is None:
+            #     logger = FBDSLogger()
+            self.logger.start_download_session()
+
+            # Pega o loop de eventos atual ou cria um novo se não existir
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+
+            # Se estamos em um notebook IPython, use o nest_asyncio
+            try:
+                import nest_asyncio
+
+                nest_asyncio.apply()
+            except ImportError:
+                pass
+
+            # Executa o download assíncrono
+            results = loop.run_until_complete(
+                self.download_files_async(
+                    url_list=url_list,
+                    output_path=self.output_path,
+                    max_concurrent=max_concurrent,
+                )
+            )
+
+            # Analisa e registra os resultados
+            self.logger.analyze_results(results)
+            return results
+
+        except Exception as e:
+            self.logger.logger.error(f"Erro durante o download: {e!s}")
+            return []

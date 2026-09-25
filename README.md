@@ -37,10 +37,10 @@ Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos
 
 ```python
 # Importa pacote
-from pyFDBS.post import FBDS
+from pyFBDS.post import FBDS
 
 # Instancia FBDS
-fbds = FBDS(output_path=output_path)
+fbds = FBDS(output_path='.')
 
 # Faz Download dos Dados para output_path
 fbds.download(municipality='SANTOS', uf='SP')

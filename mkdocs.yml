@@ -22,7 +22,9 @@ nav:
       - Abordagens: pages/abordagens.md
       - <i>Framework</i>: pages/framework.md
 
-  - Como Usar?: scripts/post/01_post.ipynb
+  - Como Usar?:
+      - Município e UF: scripts/post/01_post.ipynb
+      - Código do IBGE: scripts/post/02_post_ibge.ipynb
 
   - Como Usar? (<i>deprecated</i>):
       - <i>Web Scraping</i>:

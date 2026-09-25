@@ -20,8 +20,8 @@ from ..lxml import FBDS as FBDS_web
 class FBDS:
     def __init__(
         self,
-        temp_path: Path | str,
         output_path: Path | str,
+        temp_path: Path | str | None = None,
         logger: FBDSLogger | None = None,
     ) -> None:
         self.temp_path = Path(temp_path or tempfile.gettempdir())
@@ -32,24 +32,19 @@ class FBDS:
         self.temp_path.mkdir(exist_ok=True, parents=True)
         self.output_path.mkdir(exist_ok=True, parents=True)
 
-        # Cria pasta temporária
-        if temp_path is None:
-            temp_path = tempfile.gettempdir()
-        temp_path = Path(temp_path)
-        temp_path.mkdir(exist_ok=True, parents=True)
-
         # Configuração do cache
         self.session = requests_cache.CachedSession(
-            cache_name=str(temp_path / "fbds_cache"),  # Nome do arquivo de cache
+            cache_name=str(self.temp_path / "fbds_cache"),  # Nome do arquivo de cache
             backend="sqlite",  # Backend para armazenamento (SQLite)
             expire_after=timedelta(days=3),  # Cache expira após X dias
             allowable_methods=("GET", "POST"),  # Métodos HTTP permitidos
         )
 
-    def prepare_payload(self, uf, municipality):
+    def prepare_payload(self, uf, municipality) -> dict[str, str]:
         self.logger.logger.info(f"Preparando payload para {municipality}/{uf}")
         fdbs = FBDS_web(
             temp_path=self.temp_path,
+            output_path=self.output_path,
             logger=self.logger,
         )
 
@@ -69,17 +64,18 @@ class FBDS:
             "hrefs[0]": f"/{municipio['url'].removeprefix(self.url_base)}",
         }
 
-    def download(self, uf, municipality) -> Path:
+    def download(self, uf: str, municipality: str) -> Path:
         """
         _summary_
 
         :param uf: _description_
-        :type uf: _type_
+        :type uf: str
         :param municipality: _description_
-        :type municipality: _type_
+        :type municipality: str
         :return: _description_
         :rtype: Path
         """
+        # ddd
         dados = self.prepare_payload(
             uf=uf,
             municipality=municipality,
@@ -135,6 +131,8 @@ class FBDS:
 
     def clean_list(self, filepath: str | Path) -> list[str]:
         list_shps = self.list_shapefiles(filepath=filepath)
+
+        list_shps = [Path(x).stem for x in list_shps]
         list_shps = [x.split("_", maxsplit=2)[2] for x in list_shps]
         list_shps = [x.replace(".shp", "") for x in list_shps]
         list_shps = list(set(list_shps))
