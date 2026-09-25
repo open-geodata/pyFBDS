@@ -51,18 +51,3 @@ class ComparadorTexto:
 
         # Retorna apenas os X primeiros
         return resultados_ordenados[:top_x]
-
-
-# if __name__ == "__main__":
-#     comparador = ComparadorTexto(limite_minimo=0.2)
-
-#     alvo = "Maçã"
-#     opcoes = ["Maca", "Massa", "Banana", "Melancia", "Abacaxi", "Maracujá"]
-
-#     # Retorna os 3 mais semelhantes
-#     top_3 = comparador.buscar_top_x_semelhantes(alvo, opcoes, top_x=3)
-#     print([x for x, y in top_3])
-
-#     print(f"Top resultados para '{alvo}':")
-#     for posicao, (item, pontuacao) in enumerate(top_3, start=1):
-#         print(f"{posicao}º: {item} ({pontuacao * 100:.2f}%)")

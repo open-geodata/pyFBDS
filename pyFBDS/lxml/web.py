@@ -24,19 +24,12 @@ class FBDS:
         temp_path: Path | str | None = None,
         logger: FBDSLogger | None = None,
     ) -> None:
+        self.output_path.mkdir(exist_ok=True, parents=True)
         self.temp_path = Path(temp_path or tempfile.gettempdir())
+        self.temp_path.mkdir(exist_ok=True, parents=True)
         self.output_path = Path(output_path)
         self.url_base = "https://geo.fbds.org.br/"
         self.logger = logger or FBDSLogger()
-
-        self.temp_path.mkdir(exist_ok=True, parents=True)
-        self.output_path.mkdir(exist_ok=True, parents=True)
-
-        # # Cria pasta temporária
-        # if temp_path is None:
-        #     temp_path = tempfile.gettempdir()
-        # temp_path = Path(temp_path)
-        # temp_path.mkdir(exist_ok=True, parents=True)
 
         # Configuração do cache
         self.session = requests_cache.CachedSession(
@@ -415,7 +408,6 @@ class FBDS:
             results = loop.run_until_complete(
                 self.download_files_async(
                     url_list=url_list,
-                    output_path=self.output_path,
                     max_concurrent=max_concurrent,
                 )
             )

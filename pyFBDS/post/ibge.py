@@ -1,3 +1,14 @@
+"""
+_summary_
+
+:raises RuntimeError: _description_
+:raises TypeError: _description_
+:raises RuntimeError: _description_
+:raises RuntimeError: _description_
+:return: _description_
+:rtype: _type_
+"""
+
 import io
 import tempfile
 import unicodedata
@@ -16,20 +27,12 @@ class IBGE:
     def __init__(
         self,
         fbds: FBDS,
-        temp_path: Path | str,
+        temp_path: Path | str | None = None,
     ) -> None:
         self.fbds = fbds
-        self.temp_path = temp_path
+        self.temp_path = Path(temp_path or tempfile.gettempdir())
+        self.temp_path.mkdir(exist_ok=True, parents=True)
         self.logger = fbds.logger
-
-        # Cria pasta temporária
-        if self.temp_path is None:
-            self.temp_path = tempfile.gettempdir()
-        self.temp_path = Path(temp_path)
-        self.temp_path.mkdir(exist_ok=True, parents=True)
-
-        self.temp_path.mkdir(exist_ok=True, parents=True)
-        # self.output_path.mkdir(exist_ok=True, parents=True)
 
         # Configuração do cache
         self.session = requests_cache.CachedSession(
@@ -147,7 +150,12 @@ class IBGE:
         municipio = municipio.upper()
         return municipio
 
-    def search_municipio(self, municipality: str, uf: str, tolerancia=0.94):
+    def search_municipio(
+        self,
+        municipality: str,
+        uf: str,
+        tolerancia=0.94,
+    ) -> tuple[str, str]:
         # ddd
         municipios_uf = self.fbds.municipios(uf=uf)
 
@@ -174,7 +182,7 @@ class IBGE:
 
         # Filtrando um único item com tolerância > 0.94. Aceito!
         elif len(municipios) == 1:
-            municipality = municipios[0]
+            municipality = one(municipios)
             self.logger.logger.info(
                 f"Município {municipality} encontrado com intervalo de tolerancia de {tolerancia}. Avança pra download."
             )
@@ -190,40 +198,3 @@ class IBGE:
             raise RuntimeError("Erro genérico. Como entrei aqui!?")
 
         return municipality, uf
-
-    # def search_uf(self, id_ibge: int = 3548500):
-
-    #     UFS_IBGE = {
-    #         11: "RO",
-    #         12: "AC",
-    #         13: "AM",
-    #         14: "RR",
-    #         15: "PA",
-    #         16: "AP",
-    #         17: "TO",
-    #         21: "MA",
-    #         22: "PI",
-    #         23: "CE",
-    #         24: "RN",
-    #         25: "PB",
-    #         26: "PE",
-    #         27: "AL",
-    #         28: "SE",
-    #         29: "BA",
-    #         31: "MG",
-    #         32: "ES",
-    #         33: "RJ",
-    #         35: "SP",
-    #         41: "PR",
-    #         42: "SC",
-    #         43: "RS",
-    #         50: "MS",
-    #         51: "MT",
-    #         52: "GO",
-    #         53: "DF",
-    #     }
-    #     # Extrai os 2 primeiros dígitos
-    #     codigo_uf = int(str(id_ibge)[:2])
-    #     estado = UFS_IBGE.get(codigo_uf, "UF não encontrada")
-    #     print(estado)  # Saída: 'SP'
-    #     return estado
