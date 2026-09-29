@@ -171,8 +171,9 @@ class FBDS:
         # Lista de Layers Disponíveis
         list_shps_clean = self.clean_list(filepath=filepath)
         if layer not in list_shps_clean:
+            values = "\n".join(list_shps_clean)
             raise RuntimeError(
-                f"Para o município '{municipality}' é preciso que o layer esteja entre\n{'\n'.join(list_shps_clean)}"
+                f"Para o município '{municipality}' é preciso que o layer esteja entre\n{values}"
             )
 
         # Seleciona shapefile
