@@ -21,7 +21,7 @@ dependencies = [
     "geopandas>=1.1.4",
     "folium>=0.12",
     "matplotlib>=3.11.2",
-    "mapclassify>=2.11.0",
+    "mapclassify>=2.10.0",
     # https://more-itertools.readthedocs.io/en/stable/
     "more-itertools>=11.1.0",
     "xlrd>=2.0.2",
