@@ -24,10 +24,15 @@ class FBDS:
         temp_path: Path | str | None = None,
         logger: FBDSLogger | None = None,
     ) -> None:
+        #
+        self.output_path = Path(output_path)
         self.output_path.mkdir(exist_ok=True, parents=True)
+
+        #
         self.temp_path = Path(temp_path or tempfile.gettempdir())
         self.temp_path.mkdir(exist_ok=True, parents=True)
-        self.output_path = Path(output_path)
+
+        #
         self.url_base = "https://geo.fbds.org.br/"
         self.logger = logger or FBDSLogger()
 
