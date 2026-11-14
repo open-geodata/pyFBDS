@@ -1,7 +1,7 @@
 # Basic
 site_name: pyFBDS
 site_author: Michel Metran
-site_description: Pacote e scripts para obter dados espaciais do repositório público de mapas e shapefiles para download disponibilizados pela Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)
+site_description: Pacote para obter dados espaciais do FBDS
 site_url: https://pyfbds.readthedocs.io/
 copyright: |
   &copy; 2026 <a href="https://github.com/michelmetran"  target="_blank" rel="noopener">Michel Metran</a>
@@ -18,7 +18,7 @@ nav:
   - Home:
       - Home: index.md
       - <i>Getting Started</i>: pages/getting_started.md
-      - Histórico: pages/historico.md
+      - pyFBDS: pages/historico.md
       - Abordagens: pages/abordagens.md
       - <i>Framework</i>: pages/framework.md
 
@@ -61,7 +61,7 @@ theme:
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
-      primary: deep purple
+      primary: teal
       accent: indigo
       toggle:
         icon: material/brightness-auto
@@ -70,7 +70,7 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: deep purple
+      primary: teal
       accent: indigo
       toggle:
         icon: material/brightness-7
@@ -79,7 +79,7 @@ theme:
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: deep purple
+      primary: teal
       accent: indigo
       toggle:
         icon: material/brightness-4
@@ -120,14 +120,13 @@ plugins:
       tags_hierarchy: true
 
   - social:
-      #cards_layout: default
       cards_layout_options:
-        background_color: "#ff1493"
-        background_image: docs/assets/bug-paginacao.png
+        background_color: "#008080"
+        background_image: docs/assets/imgs/fbds.png
         color: "#ffffff"
-        #font_family: Ubuntu
+        font_family: Ubuntu
         # logo: docs/assets/logo.png
-        #title: My custom title
+        # title: My custom title
 
   #- projects
   - mkdocs-jupyter:
