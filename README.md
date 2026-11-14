@@ -37,7 +37,7 @@ Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos
 
 Pode ser testado usando o
 
-{{ badge docs/scripts/post/01_post.ipynb }}
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/open-geodata/pyFBDS/blob/main/docs/scripts/post/01_post.ipynb)
 
 ```python
 # Importa pacote
