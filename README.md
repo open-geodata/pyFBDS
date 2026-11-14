@@ -37,9 +37,7 @@ Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos
 
 Pode ser testado usando o
 
-{{ badge nb_path }}
-
-{{ badge /nb_path }}
+{{ badge docs/scripts/post/01_post.ipynb }}
 
 ```python
 # Importa pacote
