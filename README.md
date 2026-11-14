@@ -49,3 +49,5 @@ fbds.download(municipality='SANTOS', uf='SP')
 # Lê dados espaciais em formato geodataframe
 gdf = fbds.read_data(municipality='SANTOS', uf='SP', layer="APP_USO")
 ```
+
+
