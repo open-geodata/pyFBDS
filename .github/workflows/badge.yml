@@ -4,32 +4,30 @@
 name: Example Workflow
 on: [push]
 
-
 permissions:
   contents: write
 
-
 jobs:
-    badges:
-        name: Example Badge Job
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout first
-              id: checkout
-              uses: actions/checkout@v2
+  badges:
+    name: Example Badge Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout first
+        id: checkout
+        uses: actions/checkout@v2
 
-            # https://github.com/marketplace/actions/colab-badge-action
-            - name: Add/Update badges
-              id: badges
-              uses: trsvchn/colab-badge-action@v4
-              with:
-                  check: "all"
-                  target_branch: main
-                  target_repository: open-geodata/pyFBDS
-                  update: true
-            
-            # https://github.com/stefanzweifel/git-auto-commit-action
-            - name: Commit badge changes
-              uses: stefanzweifel/git-auto-commit-action@v7
-              with:
-                  commit_message: "Update Colab badges"
+      # https://github.com/marketplace/actions/colab-badge-action
+      - name: Add/Update badges
+        id: badges
+        uses: trsvchn/colab-badge-action@v4
+        with:
+          check: "all"
+          target_branch: main
+          target_repository: open-geodata/pyFBDS
+          update: true
+
+      # https://github.com/stefanzweifel/git-auto-commit-action
+      - name: Commit badge changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Update Colab badges"
