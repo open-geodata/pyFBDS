@@ -30,6 +30,6 @@ jobs:
             
             # https://github.com/stefanzweifel/git-auto-commit-action
             - name: Commit badge changes
-                uses: stefanzweifel/git-auto-commit-action@v7
-                with:
-                    commit_message: "Update Colab badges"
+              uses: stefanzweifel/git-auto-commit-action@v7
+              with:
+                  commit_message: "Update Colab badges"
