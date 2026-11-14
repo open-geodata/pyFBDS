@@ -1,7 +1,8 @@
 # pyFBDS
 
 [![Repo](https://img.shields.io/badge/GitHub-repo-blue?logo=github&logoColor=f5f5f5)](https://github.com/open-geodata/pyFBDS)
-[![PyPI - Version](https://img.shields.io/pypi/v/pyFBDS?logo=pypi&label=PyPI&color=blue)](https://pypi.org/project/pyFBDS/)<br>
+[![PyPI - Version](https://img.shields.io/pypi/v/pyFBDS?logo=pypi&label=PyPI&color=blue)](https://pypi.org/project/pyFBDS/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/open-geodata/pyFBDS/blob/main/docs/scripts/post/01_post.ipynb)<br>
 [![Read the Docs](https://img.shields.io/readthedocs/pyfbds/latest?logo=ReadTheDocs&label=Read%20The%20Docs)](https://pyfbds.readthedocs.io/)
 [![Publish Python to PyPI](https://github.com/open-geodata/pyFBDS/actions/workflows/publish-to-pypi-uv.yml/badge.svg)](https://github.com/open-geodata/pyFBDS/actions/workflows/publish-to-pypi-uv.yml)
 
@@ -35,10 +36,6 @@ pip3 install pyFBDS
 
 Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos, consultar o _script_ [01_post.ipynb](./docs/scripts/post/01_post.ipynb).
 
-Pode ser testado usando o
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/open-geodata/pyFBDS/blob/main/docs/scripts/post/01_post.ipynb)
-
 ```python
 # Importa pacote
 from pyFBDS.post import FBDS
@@ -52,14 +49,3 @@ fbds.download(municipality='SANTOS', uf='SP')
 # Lê dados espaciais em formato geodataframe
 gdf = fbds.read_data(municipality='SANTOS', uf='SP', layer="APP_USO")
 ```
-
-<br>
-
----
-
-## _TODO_
-
-1. Ajustar os tipos de arquivos (Pontos, _Polylines_, _Polygons_), visto que na lista de arquivos surgiu uma feição curiosa:
-   1. _RIOS_DUPLOS.shp_
-   2. _RIOS*DUPLOS*.shp_
-   3. _RIOS_DUPLOS_POL.shp_
