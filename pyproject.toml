@@ -1,6 +1,6 @@
 [project]
 name = "pyFBDS"
-version = "0.1.16"
+version = "0.1.17"
 description = "Pacote e scripts para obter dados espaciais da Fundação Brasileira para o Desenvolvimento Sustentável (FBDS)"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -28,10 +28,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
-    #"contextily>=1.7.1",
-    "notebook>=7.4.7",
-]
+dev = ["notebook>=7.4.7"]
 docs = [
     "mkdocs-jupyter>=0.25.1",
     "mkdocs-material[imaging]>=9.6.23",

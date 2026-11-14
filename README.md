@@ -35,6 +35,8 @@ pip3 install pyFBDS
 
 Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos, consultar o _script_ [01_post.ipynb](./docs/scripts/post/01_post.ipynb).
 
+Pode ser testado usando o [Google Colab](https://colab.research.google.com/github/open-geodata/pyFBDS/blob/main/docs/scripts/post/01_post.ipynb)
+
 ```python
 # Importa pacote
 from pyFBDS.post import FBDS
