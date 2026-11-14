@@ -1,6 +1,10 @@
 name: Publish Python to PyPI
 
-on: push
+on:
+  workflow_run:
+    workflows: ["Update Colab badges"]
+    types: [completed]
+    branches: [main]
 
 jobs:
   build-n-publish:
@@ -8,14 +12,19 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     # Permissão necessária para autenticação via OIDC no PyPI (Sem token fixo)
     permissions:
+      contents: read
       id-token: write
 
     steps:
       # https://github.com/actions/checkout
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       # https://github.com/astral-sh/setup-uv
       - name: Install uv

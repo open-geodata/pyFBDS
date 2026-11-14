@@ -1,8 +1,11 @@
 # dddd
 # https://github.com/marketplace/actions/colab-badge-action
 
-name: Example Workflow
-on: push
+name: Update Colab badges
+
+on:
+  push:
+    branches: [main]
 
 permissions:
   contents: write
