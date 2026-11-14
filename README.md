@@ -35,7 +35,11 @@ pip3 install pyFBDS
 
 Abaixo é apresentado uma forma simples de utilizar o pacote. Para mais exemplos, consultar o _script_ [01_post.ipynb](./docs/scripts/post/01_post.ipynb).
 
-Pode ser testado usando o {{ badge }}
+Pode ser testado usando o
+
+{{ badge nb_path }}
+
+{{ badge /nb_path }}
 
 ```python
 # Importa pacote
