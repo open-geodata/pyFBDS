@@ -8,7 +8,7 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Literal
 from urllib.parse import urlencode
-
+import requests
 import geopandas as gpd
 import requests_cache
 from more_itertools import one
@@ -63,37 +63,50 @@ class FBDS:
             "hrefs[0]": f"/{municipio['url'].removeprefix(self.url_base)}",
         }
 
-    def download(self, uf: str, municipality: str) -> Path:
+    def download(
+        self,
+        municipality: str,
+        uf: str,
+    ) -> Path:
         """
-        _summary_
+        Faz o download dos dados do município
 
-        :param uf: _description_
+        :param uf: Sigla do Estado
         :type uf: str
-        :param municipality: _description_
+        :param municipality: Nome do Município
         :type municipality: str
-        :return: _description_
+        :return: Caminho do arquivo salvo
         :rtype: Path
         """
         # ddd
+        self.logger.logger.info("Preparando payload do download")
         dados = self.prepare_payload(
             uf=uf,
             municipality=municipality,
         )
+        self.logger.logger.info("Payload preparado; iniciando download")
 
-        r = self.session.post(
-            # Qualquer um dos 3 prefixos de url servem
-            # url="https://geo.fbds.org.br/SP/?",
-            # url="https://geo.fbds.org.br/SP/",
-            url="https://geo.fbds.org.br/",
-            data=urlencode(dados),
-            # Precisa ter o parâmetro headers
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        )
+        try:
+            r = self.session.post(
+                # Qualquer um dos 3 prefixos de url servem
+                # url="https://geo.fbds.org.br/SP/?",
+                # url="https://geo.fbds.org.br/SP/",
+                url="https://geo.fbds.org.br/",
+                data=urlencode(dados),
+                # Precisa ter o parâmetro headers
+                headers={
+                    # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+                    "User-Agent": "Mozilla/5.0",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                timeout=(10, 60),
+            )
 
-        r.raise_for_status()
+            r.raise_for_status()
+
+        except requests.exceptions.Timeout:
+            self.logger.logger.error("A requisição excedeu o tempo limite.")
+            raise
 
         filename = dados["as"]
         self.logger.logger.info(f'O arquivo terá o nome de "{filename}"')
