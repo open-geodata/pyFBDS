@@ -10,6 +10,7 @@ from typing import Literal
 from urllib.parse import urlencode
 import requests
 import geopandas as gpd
+from time import monotonic
 import requests_cache
 from more_itertools import one
 
@@ -67,6 +68,7 @@ class FBDS:
         self,
         municipality: str,
         uf: str,
+        max_download_seconds: float = 600,
     ) -> Path:
         """
         Faz o download dos dados do município
@@ -86,37 +88,66 @@ class FBDS:
         )
         self.logger.logger.info("Payload preparado; iniciando download")
 
-        try:
-            r = self.session.post(
-                # Qualquer um dos 3 prefixos de url servem
-                # url="https://geo.fbds.org.br/SP/?",
-                # url="https://geo.fbds.org.br/SP/",
-                url="https://geo.fbds.org.br/",
-                data=urlencode(dados),
-                # Precisa ter o parâmetro headers
-                headers={
-                    # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
-                    "User-Agent": "Mozilla/5.0",
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                timeout=(10, 60),
-            )
+        if max_download_seconds <= 0:
+            raise ValueError("max_download_seconds deve ser maior que zero")
 
-            r.raise_for_status()
+        filepath = self.output_path / dados["as"]
+        partial_path = filepath.with_suffix(filepath.suffix + ".part")
+        deadline = monotonic() + max_download_seconds
+
+        # ...existing code...
+        try:
+            self.logger.logger.info("Enviando POST; aguardando resposta do servidor")
+            with self.session.cache_disabled():
+                with self.session.post(
+                    url="https://geo.fbds.org.br/",
+                    data=urlencode(dados),
+                    headers={
+                        "User-Agent": "Mozilla/5.0",
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    timeout=(10, 15),
+                    stream=True,
+                ) as r:
+                    self.logger.logger.info(
+                        "Resposta recebida: status=%s, content-length=%s",
+                        r.status_code,
+                        r.headers.get("Content-Length", "desconhecido"),
+                    )
+                    r.raise_for_status()
+
+                    received = 0
+                    with partial_path.open("wb") as file:
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            if monotonic() >= deadline:
+                                raise requests.exceptions.Timeout(
+                                    "O tempo máximo de download foi excedido."
+                                )
+                            if chunk:
+                                file.write(chunk)
+                                received += len(chunk)
+                                self.logger.logger.info(
+                                    "Download recebido: %.1f MB",
+                                    received / (1024 * 1024),
+                                )
+
+            if monotonic() >= deadline:
+                raise requests.exceptions.Timeout(
+                    "O tempo máximo de download foi excedido."
+                )
+
+            partial_path.replace(filepath)
+        # ...existing code...
 
         except requests.exceptions.Timeout:
-            self.logger.logger.error("A requisição excedeu o tempo limite.")
+            partial_path.unlink(missing_ok=True)
+            self.logger.logger.error("O tempo máximo de download foi excedido.")
+            raise
+        except requests.exceptions.RequestException:
+            partial_path.unlink(missing_ok=True)
+            self.logger.logger.exception("Falha na requisição do download.")
             raise
 
-        filename = dados["as"]
-        self.logger.logger.info(f'O arquivo terá o nome de "{filename}"')
-
-        # Salva Arquivo
-        filepath = Path(self.output_path) / filename
-        with open(file=filepath, mode="wb") as f:
-            f.write(r.content)
-
-        # Logs
         self.logger.logger.info(f"Arquivo salvo em {filepath}")
         return filepath
 
