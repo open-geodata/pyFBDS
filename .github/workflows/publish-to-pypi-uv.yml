@@ -2,7 +2,7 @@ name: Publish Python to PyPI
 
 on:
   workflow_run:
-    workflows: ["Update Colab badges"]
+    # workflows: ["Update Colab badges"]
     types: [completed]
     branches: [main]
 

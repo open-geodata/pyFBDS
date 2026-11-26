@@ -25,6 +25,7 @@ nav:
   - Como Usar?:
       - Município e UF: scripts/post/01_post.ipynb
       - Código do IBGE: scripts/post/02_post_ibge.ipynb
+      - Multiplos Municípios: scripts/post/03_post_multiple.ipynb
 
   - Como Usar? (<i>deprecated</i>):
       - <i>Web Scraping</i>:
